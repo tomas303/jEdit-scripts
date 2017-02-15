@@ -1,2 +1,2 @@
 # jEdit-scripts
-some jEdit scripts
+Hera are just some jEdit scripts I am using.
