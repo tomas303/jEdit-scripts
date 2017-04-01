@@ -1,0 +1,78 @@
+import java.util.regex.*;
+
+
+void demoScanLines(Macros, textArea, view) {
+	textArea.goToFirstVisibleLine(false);
+	for(int i=0; i < textArea.getLineCount(); i++)
+	{
+		lineText = textArea.getLineText(i);
+		boolean mPos = lineText.contains("text");
+		if (mPos) {
+			Macros.message(view, lineText);
+		}
+		textArea.goToNextLine(false);
+	}
+}
+
+class Liby {
+	fview;
+
+    Liby(view){
+    	this.fview = view;
+    }
+	
+	void showError(String msg) {
+		JOptionPane.showMessageDialog(fview, msg, "liby", JOptionPane.ERROR_MESSAGE);
+	}
+	
+	Matcher newRegEx(String regex, int flags) {
+		final static String ErrorRegexp = "Invalid regular expression: ";
+		try {
+	      pattern = Pattern.compile(regex, flags);
+	      matcher = pattern.matcher("x");
+	      return matcher;
+	    }
+	    catch (PatternSyntaxException e) {
+	      this.showError(ErrorRegexp + regex + "\n" + e);
+	      return null;
+	    }
+	}
+	
+	void testcall(callback) {
+		callback.process("ahoj");
+	}
+	
+	void scanLines(textArea, callback) {
+		StringBuffer sbf = new StringBuffer();
+		// get lines to process
+    	int[] lines = textArea.getSelectedLines();
+    	int mStartLine, mEndLine;
+    	if (lines == null || lines.length <= 1) {
+    	  // no selection ==> process all lines
+    	  mStartLine = 0;
+    	  mEndLine = textArea.getLineCount() - 1;
+    	} else {
+    	  // selection exist
+    	  mStartLine = lines[0];
+    	  mEndLine = lines[lines.length - 1];
+    	}
+    	// process lines
+    	for (int i = mStartLine; i <= mEndLine; i++)
+    	{
+    		String lineText = textArea.getLineText(i);
+    		String newText = callback.process(lineText);
+    		sbf.append(newText).append("\n");
+    	}
+    	if (lines == null || lines.length <= 1) {
+    	  textArea.setText(sbf.toString());
+    	} else {
+    	  textArea.setSelectedText(sbf.toString());
+    	}
+	}
+	
+
+}
+ 
+Liby newLiby(view) {
+	return new Liby(view);
+}

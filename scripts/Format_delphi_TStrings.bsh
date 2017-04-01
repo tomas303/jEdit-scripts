@@ -1,0 +1,22 @@
+
+// format content of TStrings
+
+int pos = scriptPath.lastIndexOf("\\");
+scriptDir = scriptPath.substring(0, pos);
+lib = run(scriptDir + "/../lib.beanshell");
+liby = lib.newLiby(view);
+
+class cb {
+	String process(String line) {
+		String[] lines = line.split("#\\$D#\\$A");
+		String result = "";
+		for (String s: lines) {           
+			result = result + s.replace("'", "") + "\n"; 
+        }
+		return result;
+	}
+}
+
+liby.scanLines(textArea, new cb());
+
+

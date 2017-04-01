@@ -1,0 +1,19 @@
+
+// add number for each line
+
+int pos = scriptPath.lastIndexOf("\\");
+scriptDir = scriptPath.substring(0, pos);
+lib = run(scriptDir + "/../lib.beanshell");
+liby = lib.newLiby(view);
+
+class cb {
+	int fCnt;
+	String process(String line) {
+		fCnt++;
+		return fCnt.toString() + ": " + line;
+	}
+}
+
+liby.scanLines(textArea, new cb());
+
+
